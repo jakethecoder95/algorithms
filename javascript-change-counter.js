@@ -1,3 +1,4 @@
+
 var changeCounter = function(change) {
     change = change * 100;
     scaledChange = change % 25;
@@ -18,3 +19,5 @@ var changeCounter = function(change) {
     console.log('dimes: ' + dimes);
     console.log('quarters: ' + quarters);
 }
+
+changeCounter(0.59);
