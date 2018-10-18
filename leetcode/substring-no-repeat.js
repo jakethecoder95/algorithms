@@ -3,7 +3,7 @@
  * two for loops
 */
 
-var str = 'abcdefghij';
+var str = "pwwkew";
 
 lengthOfLongestSubstring(str);
 
@@ -17,16 +17,19 @@ function lengthOfLongestSubstring(str) {
 
     for (var cur = 0; test === true && subStrArr[cur] != null; cur++) {
 
-        for (var i = 0; i < subStr.length; i++) {
+        for (var i = 0; i < subStr.length && test !== false; i++) {
             if (subStrArr[cur] === subStr[i]) {
                 test = false;
-                i = subStr.length
             }
         }
-        subStr.push(subStrArr[cur]);
+
+        if (test) {
+            subStr.push(subStrArr[cur]);
+        }
 
     }
     subStr = subStr.join('');
 
-    return (subStr.length);
+    console.log(subStr.length);
+    return subStr.length;
 }
