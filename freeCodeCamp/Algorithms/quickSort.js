@@ -21,7 +21,6 @@ const arr = [
 
 const quickSort = (arr, start, end) => {
   if (start < end) {
-    // You can learn about how the pivot value is derived in the comments below
     let pivot = partition(arr, start, end);
 
     // Make sure to read the below comments to understand why pivot - 1 and pivot + 1 are used
@@ -72,7 +71,6 @@ quickSort(arr, 0, arr.length - 1);
 console.log(arr);
 
 // OLD CODE
-
 // let pivot = -1,
 //   pivotIndex = -1;
 
