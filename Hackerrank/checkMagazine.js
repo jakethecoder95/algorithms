@@ -22,4 +22,19 @@
  ** right words, but there's a case mismatch. The answer is No.
  */
 
-function checkMagazine(magazine, note) {}
+function checkMagazine(magazine, note) {
+  for (let word of note) {
+    const wordFound = magazine.indexOf(word);
+    if (wordFound === -1) {
+      console.log("No");
+      return;
+    }
+    magazine[wordFound] = null;
+  }
+  console.log("Yes");
+}
+
+checkMagazine(
+  ["two", "times", "three", "is", "not", "four"],
+  ["two", "times", "two", "is", "four"]
+);
