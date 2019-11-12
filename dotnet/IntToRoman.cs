@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace dotnet
@@ -61,13 +61,6 @@ namespace dotnet
             }
 
             return answer;
-        }
-    }
-    partial class Program
-    {
-        static void Main(string[] args)
-        {
-            Console.WriteLine(IntToRoman.Run(449));
         }
     }
 }
