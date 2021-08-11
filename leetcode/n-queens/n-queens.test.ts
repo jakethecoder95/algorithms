@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import solveNQueens from './n-queens';  
+import solveNQueens, { containsCollisions } from './n-queens';
 
 describe('n-queens problem', () => {
 
@@ -15,3 +15,16 @@ describe('n-queens problem', () => {
 
 });
 
+describe('containsCollisions', () => {
+
+  it('should not find collisions', () => {
+    expect(containsCollisions([".Q..","...Q","Q...","..Q."])).toBe(false);
+    expect(containsCollisions(["..Q.","Q...","...Q",".Q.."])).toBe(false);
+  })
+
+  it('should not find collisions', () => {
+    expect(containsCollisions(["Q...","..Q.","Q...","..Q."])).toBe(true);
+    expect(containsCollisions(["..Q.","Q...","...Q","..Q."])).toBe(true);
+  })
+
+});
