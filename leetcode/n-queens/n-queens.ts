@@ -1,26 +1,38 @@
-export const containsCollisions = (board: string[]) => {
-  for (let rowOfQueenIndex = 0; rowOfQueenIndex < board.length - 1; ++rowOfQueenIndex) {
-    const rowOfQueen = board[rowOfQueenIndex];
-    const fileOfQueen = rowOfQueen.indexOf('Q')!;
+const getEmptyRank = (n: number) => {
+  let newRank = '';
+  for (let i = 0; i < n; i++) {
+    newRank += '.';
+  }
+  return newRank;
+};
 
-    for (let currentRow = rowOfQueenIndex + 1; currentRow < board.length; currentRow++) {
+const moveQueenTo = (index: number, rank: string) => rank
+  .replace('Q', '.')
+  .substr(0, index) + 'Q' + rank.substr(index + 1);
+
+export const containsCollisions = (board: string[]) => {
+  if (board[1] === 'Q') board[1] = 'Q.';
+  for (let rankOfQueenIndex = 0; rankOfQueenIndex < board.length - 1; ++rankOfQueenIndex) {
+    const rankOfQueen = board[rankOfQueenIndex];
+    const fileOfQueenIndex = rankOfQueen.indexOf('Q')!;
+
+    for (let currentRow = rankOfQueenIndex + 1; currentRow < board.length; currentRow++) {
+      const distanceFromQueen = currentRow - rankOfQueenIndex;
 
       // Check vertical line from queen
-      if (board[currentRow][fileOfQueen] === 'Q') {
+      if (board[currentRow][fileOfQueenIndex] === 'Q') {
         return true;
       }
 
       // Check diagonal forward
-      const rowsFrw = currentRow - rowOfQueenIndex;
-      const diagonalFrwIndex = fileOfQueen + rowsFrw;
-      if (diagonalFrwIndex >= board.length && board[currentRow][diagonalFrwIndex] === 'Q') {
+      const diagonalFrwIndex = fileOfQueenIndex + distanceFromQueen;
+      if (board[currentRow][diagonalFrwIndex] === 'Q') {
         return true;
       }
 
       // Check diagonal backward
-      const rowsBack = currentRow - rowOfQueenIndex;
-      const diagonalBackIndex = fileOfQueen - rowsBack;
-      if (diagonalBackIndex < 0 && board[currentRow][diagonalBackIndex] === 'Q') {
+      const diagonalBackIndex = fileOfQueenIndex - distanceFromQueen;
+      if (board[currentRow][diagonalBackIndex] === 'Q') {
         return true;
       }
     }
@@ -29,48 +41,29 @@ export const containsCollisions = (board: string[]) => {
   return false;
 };
 
-const getBoardPosition = (startingIndexForQueen: number, n: number) => {
-  const board: string[] = [];
+const getValidBoards = (
+  n: number,
+  rank: number,
+  board: string[],
+  validBoards: string[][]
+) => {
 
-  let indexForQueen = startingIndexForQueen;
-  for (let row = 0; row < n; row++) {
-    for (let file = 0; file < n; file++) {
+  const newBoard = [ ...board, getEmptyRank(n) ];
 
-      if (file === 0) board[row] = '';
-      board[row] += file === indexForQueen ? 'Q' : '.';
+  for (let file = 0; file < n; file++) {
+    newBoard[rank] = moveQueenTo(file, newBoard[rank]);
+
+    if (!containsCollisions(newBoard)) {
+      rank === n - 1
+        ? validBoards.push([ ...newBoard ])
+        : getValidBoards(n, rank + 1, newBoard, validBoards);
     }
-
-    indexForQueen = (indexForQueen + 2) % n;
-  }
-
-  return board;
-};
-
-const forEachBoardPosition = (n: number, cb: Function) => {
-  for (let row = 0; row < n; row++) {
-    const boardPosition = getBoardPosition(row, n);
-    cb(boardPosition);
   }
 };
 
-const solveNQueens = (n: number): string[][] => {
-  if (n === 0) {
-    return [];
-  }
-
-  if (n === 1) {
-    return [['Q']];
-  }
-
-  const validBoards: string[][] = [];
-  forEachBoardPosition(n, (board: any) => {
-    if (!containsCollisions(board)) {
-      validBoards.push(board);
-    }
-  });
-
+export const solveNQueens = (n: number) => {
+  const validBoards = [];
+  getValidBoards(n, 0, [], validBoards);
   return validBoards;
 };
-
-export default solveNQueens;
 
